@@ -1,0 +1,23 @@
+name: i18n-php test
+description: Install composer deps and run phpunit on the PHP i18n package
+
+inputs:
+  php-version:
+    description: PHP version to test against
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php-version }}
+        coverage: none
+    - name: Install composer deps
+      working-directory: packages/i18n-php
+      shell: bash
+      run: composer install --prefer-dist --no-progress --no-interaction
+    - name: Run phpunit
+      working-directory: packages/i18n-php
+      shell: bash
+      run: vendor/bin/phpunit
